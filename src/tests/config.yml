@@ -1,0 +1,19 @@
+---
+data_path: '/data/methylation/sarcoma/data_top5k.npz'
+output_path: 
+seed: 617
+verbose: 0
+model:
+  C: 4
+  K: 6
+prior: 
+  pi_prior: 'gamma'
+  phi_prior: 'gamma'
+  theta_prior: 'gamma'
+  shp_pi: 0.1
+  shp_phi: 0.1
+  shp_theta: 0.1
+  shp_delta: 0.1
+  rte_delta: 0.1
+  bm: 1
+  bu: 1

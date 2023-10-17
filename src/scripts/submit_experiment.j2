@@ -1,0 +1,32 @@
+#!/bin/bash
+#SBATCH --job-name={{ experiment_name }}
+#SBATCH --nodes={{ num_nodes }}
+#SBATCH --ntasks-per-node={{ num_tasks_per_node }}
+#SBATCH --array=0-{{ array_range }}
+
+DOCKER_IMAGE=dncb-fac-image
+CONTAINER_NAME=dncb-fac-container
+
+# Load necessary modules
+module load jq
+
+# Read the job configuration from the JSON file
+job_config_file="{{ experiment_config_json }}"
+{% raw %}
+job_config=$(jq -r ".[${SLURM_ARRAY_TASK_ID}]" $job_config_file)
+
+# Extract the individual configuration values
+job_name=$(echo $job_config | jq -r ".job_name")
+num_nodes=$(echo $job_config | jq -r ".num_nodes")
+num_tasks_per_node=$(echo $job_config | jq -r ".num_tasks_per_node")
+
+data_path=$(echo $job_config | jq -r ".data_path")
+output_path=$(echo $job_config | jq -r ".output_path")
+C=$(echo $job_config | jq -r ".C")
+K=$(echo $job_config | jq -r ".K")
+uuid=$(echo $job_config | jq -r ".uuid")
+
+# Run the Docker container
+docker run --rm -v $(dirname ${data_path}):/work/data -v ./${uuid}:/data/tmp ${DOCKER_IMAGE} \
+    python src/dncbfac/cli.py --data_path="/work/data/$(basename ${data_path})" --output_path="/work/tmp" --C=${C} --K=${K}
+{% endraw %}
