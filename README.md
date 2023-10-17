@@ -7,12 +7,8 @@ Source code for "Stable Dimensionality Reduction for Bounded Support Data" by An
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make build' and 'make bash'
     ├── README.md          <- The top-level README for developers using this project.
-    ├── requirements.txt   <- Dependencies
-    ├── docs               
+    ├── requirements.txt   <- Dependencies          
     ├── notebooks           
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures
     │
     ├── src                <- Source code for use in this project.
     │   ├── Makefile            
@@ -23,7 +19,7 @@ Source code for "Stable Dimensionality Reduction for Bounded Support Data" by An
     │   │   └── make_heldout_experiment_config.py
     │   │   └── submit_heldout_experiment.j2
     │   │
-    │   ├── dncbfac             <- Source code for the model and model-based experiments
+    │   ├── dncbfac             <- Source code for the model python package
     │   │   └── cython_files        <- Model source code
     │   │   └── api.py          
     │   │   └── heldout_experiment.py
