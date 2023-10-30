@@ -28,7 +28,7 @@ uuid=$(echo $job_config | jq -r ".uuid")
 # Run the Docker container
 #docker image pull oak:6000/dncb-fac-image
 
-docker run --rm -v /data/projects/dncbtd:/work/data -v results/heldout_experiment:/data/tmp  \
+docker run --rm -v /data/projects/dncbtd:/work/data -v results/heldout_experiment:/work/data/tmp  \
     --env MLFLOW_EXPERIMENT_NAME=${MLFLOW_EXPERIMENT_NAME} ${DOCKER_IMAGE} \
     python src/dncbfac/heldout_experiment.py "${job_config}"
 {% endraw %}

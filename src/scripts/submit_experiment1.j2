@@ -1,14 +1,15 @@
 #!/bin/bash
 #SBATCH --job-name={{ experiment_name }}
 #SBATCH -w c0
-#SBATCH --mem-per-cpu=5G
+#SBATCH --nodes={{ num_nodes }}
+#SBATCH --ntasks-per-node={{ num_tasks_per_node }}
 #SBATCH --array=0-{{ array_range }}
-#SBATCH --error=./results/stability_experiment/errorlog-%j.err
+#SBATCH --error=./results/experiment_1/errorlog-%j.err
 
 DOCKER_IMAGE=dncb-fac-image
 CONTAINER_NAME=dncb-fac-container
 
-MLFLOW_EXPERIMENT_NAME=stability_experiment
+MLFLOW_EXPERIMENT_NAME=experiment_1
 
 # Load necessary modules
 module load jq
@@ -28,7 +29,7 @@ uuid=$(echo $job_config | jq -r ".uuid")
 # Run the Docker container
 #docker image pull oak:6000/dncb-fac-image
 
-docker run --rm -v /data/projects/dncbtd:/work/data -v ./results/stability_experiment:/work/data/tmp  \
+docker run --rm -v /data/projects/dncbtd:/work/data -v ./${uuid}:/work/data/tmp  \
     --env MLFLOW_EXPERIMENT_NAME=${MLFLOW_EXPERIMENT_NAME} ${DOCKER_IMAGE} \
-    python src/dncbfac/stability_experiment.py "${job_config}"
+    python src/dncbfac/api.py "${job_config}"
 {% endraw %}
